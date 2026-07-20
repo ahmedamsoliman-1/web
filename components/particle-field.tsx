@@ -59,11 +59,58 @@ export function ParticleField() {
       seed();
     };
 
-    // ---- WebGL setup (falls back to 2D on any failure) ----
-    const gl = (canvas.getContext("webgl", { alpha: true, antialias: true, premultipliedAlpha: false }) ||
-      canvas.getContext("experimental-webgl", { alpha: true })) as WebGLRenderingContext | null;
+    // ---- Shader sources ----
+    const VS_SRC = `attribute vec2 a_pos; attribute float a_alpha; uniform float u_point; varying float v_alpha;
+      void main(){ v_alpha=a_alpha; gl_Position=vec4(a_pos,0.0,1.0); gl_PointSize=u_point; }`;
+    const FS_SRC = `precision mediump float; uniform vec3 u_color; uniform float u_point; varying float v_alpha;
+      void main(){
+        if(u_point>0.5){ vec2 c=gl_PointCoord-vec2(0.5); float d=length(c); if(d>0.5) discard; float a=smoothstep(0.5,0.1,d); gl_FragColor=vec4(u_color, a*v_alpha); }
+        else { gl_FragColor=vec4(u_color, v_alpha); }
+      }`;
 
-    let use2d = !gl;
+    const buildProgram = (g: WebGLRenderingContext) => {
+      const mk = (type: number, src: string) => {
+        const s = g.createShader(type);
+        if (!s) return null;
+        g.shaderSource(s, src);
+        g.compileShader(s);
+        if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+          g.deleteShader(s);
+          return null;
+        }
+        return s;
+      };
+      const vs = mk(g.VERTEX_SHADER, VS_SRC);
+      const fs = mk(g.FRAGMENT_SHADER, FS_SRC);
+      if (!vs || !fs) return null;
+      const p = g.createProgram();
+      if (!p) return null;
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    };
+
+    // Probe WebGL on a THROWAWAY canvas first. A canvas is permanently locked to
+    // the first context type it hands out, so if we requested WebGL on the visible
+    // canvas and the program failed to link, getContext("2d") would return null and
+    // crash the fallback. Probing elsewhere keeps the visible canvas untainted.
+    const webglOk = (() => {
+      try {
+        const probe = document.createElement("canvas");
+        const g = (probe.getContext("webgl") || probe.getContext("experimental-webgl")) as WebGLRenderingContext | null;
+        if (!g) return false;
+        const ok = !!buildProgram(g);
+        g.getExtension("WEBGL_lose_context")?.loseContext();
+        return ok;
+      } catch {
+        return false;
+      }
+    })();
+
+    let use2d = !webglOk;
+    let gl: WebGLRenderingContext | null = null;
     let program: WebGLProgram | null = null;
     let posBuf: WebGLBuffer | null = null;
     let aPos = -1;
@@ -71,53 +118,26 @@ export function ParticleField() {
     let uColor: WebGLUniformLocation | null = null;
     let uPoint: WebGLUniformLocation | null = null;
 
-    const compile = (type: number, src: string) => {
-      const s = gl!.createShader(type)!;
-      gl!.shaderSource(s, src);
-      gl!.compileShader(s);
-      if (!gl!.getShaderParameter(s, gl!.COMPILE_STATUS)) {
-        gl!.deleteShader(s);
-        return null;
-      }
-      return s;
-    };
-
-    if (gl) {
-      const vs = compile(
-        gl.VERTEX_SHADER,
-        `attribute vec2 a_pos; attribute float a_alpha; uniform float u_point; varying float v_alpha;
-         void main(){ v_alpha=a_alpha; gl_Position=vec4(a_pos,0.0,1.0); gl_PointSize=u_point; }`
-      );
-      const fs = compile(
-        gl.FRAGMENT_SHADER,
-        `precision mediump float; uniform vec3 u_color; uniform float u_point; varying float v_alpha;
-         void main(){
-           if(u_point>0.5){ vec2 c=gl_PointCoord-vec2(0.5); float d=length(c); if(d>0.5) discard; float a=smoothstep(0.5,0.1,d); gl_FragColor=vec4(u_color, a*v_alpha); }
-           else { gl_FragColor=vec4(u_color, v_alpha); }
-         }`
-      );
-      if (vs && fs) {
-        program = gl.createProgram();
-        gl.attachShader(program!, vs);
-        gl.attachShader(program!, fs);
-        gl.linkProgram(program!);
-        if (gl.getProgramParameter(program!, gl.LINK_STATUS)) {
-          aPos = gl.getAttribLocation(program!, "a_pos");
-          aAlpha = gl.getAttribLocation(program!, "a_alpha");
-          uColor = gl.getUniformLocation(program!, "u_color");
-          uPoint = gl.getUniformLocation(program!, "u_point");
-          posBuf = gl.createBuffer();
-          gl.enable(gl.BLEND);
-          gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        } else {
-          use2d = true;
-        }
+    if (webglOk) {
+      gl = (canvas.getContext("webgl", { alpha: true, antialias: true, premultipliedAlpha: false }) ||
+        canvas.getContext("experimental-webgl", { alpha: true })) as WebGLRenderingContext | null;
+      program = gl ? buildProgram(gl) : null;
+      if (gl && program) {
+        aPos = gl.getAttribLocation(program, "a_pos");
+        aAlpha = gl.getAttribLocation(program, "a_alpha");
+        uColor = gl.getUniformLocation(program, "u_color");
+        uPoint = gl.getUniformLocation(program, "u_point");
+        posBuf = gl.createBuffer();
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       } else {
         use2d = true;
       }
     }
 
     const ctx2d = use2d ? canvas.getContext("2d") : null;
+    // Nothing renders (extremely rare: canvas tainted and no 2D). Bail without crashing.
+    if (!gl && !ctx2d) return;
     resize();
 
     const LINK_DIST = coarse ? 120 : 150;
@@ -168,6 +188,7 @@ export function ParticleField() {
     };
 
     const drawGL = () => {
+      if (!gl || !program) return;
       gl!.viewport(0, 0, canvas.width, canvas.height);
       gl!.clear(gl!.COLOR_BUFFER_BIT);
       gl!.useProgram(program);
@@ -189,7 +210,8 @@ export function ParticleField() {
     };
 
     const draw2d = () => {
-      const c = ctx2d!;
+      const c = ctx2d;
+      if (!c) return;
       c.setTransform(dpr, 0, 0, dpr, 0, 0);
       c.clearRect(0, 0, w, h);
       const col = `${rgb[0]},${rgb[1]},${rgb[2]}`;
