@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Download, Github, Linkedin, Mail } from "@/components/icons";
+import { ArrowDown, ArrowUpRight, Download, Github, Globe, Linkedin, Mail } from "@/components/icons";
 import { Navigation } from "@/components/navigation";
 import { RevealObserver } from "@/components/reveal";
 import { SystemVisual } from "@/components/system-visual";
 import { Atmosphere } from "@/components/atmosphere";
 import { Interactions } from "@/components/interactions";
+import { Headline } from "@/components/headline";
 import { certifications, experience, expertise, profile, technologyGroups } from "@/content/profile";
 
 const stats = [
@@ -41,18 +42,19 @@ export default function Home() {
           <div className="hero-glow" aria-hidden="true" />
           <div className="hero-copy">
             <div className="eyebrow reveal-load" style={{ ["--d" as string]: "0ms" }}><span className="status-dot" />Available for meaningful challenges</div>
-            <h1 className="reveal-load" style={{ ["--d" as string]: "90ms" }}>Engineering <span className="grad-text">intelligence.</span><br /><span className="outline-text">Operating reliability.</span></h1>
-            <p className="reveal-load" style={{ ["--d" as string]: "180ms" }}>{profile.summary}</p>
-            <div className="hero-actions reveal-load" style={{ ["--d" as string]: "260ms" }}>
+            <Headline />
+            <p className="reveal-load" style={{ ["--d" as string]: "620ms" }}>{profile.summary}</p>
+            <div className="hero-actions reveal-load" style={{ ["--d" as string]: "700ms" }}>
               <a className="button button-primary" href="#experience">Explore my work <ArrowDown /></a>
+              <a className="button button-ghost" href={profile.website} target="_blank" rel="noreferrer">Main website <Globe /></a>
               <a className="button button-ghost" href={profile.resumeUrl} target="_blank" rel="noreferrer">Download résumé <Download /></a>
             </div>
-            <div className="hero-meta reveal-load" style={{ ["--d" as string]: "340ms" }}>
+            <div className="hero-meta reveal-load" style={{ ["--d" as string]: "780ms" }}>
               <div><small>BASED IN</small><strong>Abu Dhabi, UAE</strong></div>
               <div><small>SPECIALIZING IN</small><strong>AI · Backend · Cloud</strong></div>
             </div>
           </div>
-          <div className="hero-art reveal-load" style={{ ["--d" as string]: "220ms" }} data-tilt><SystemVisual /></div>
+          <div className="hero-art reveal-fade" style={{ ["--d" as string]: "220ms" }} data-tilt data-scrub><SystemVisual /></div>
           <a className="scroll-cue" href="#intro"><span>Scroll to explore</span><ArrowDown /></a>
         </section>
 
@@ -89,6 +91,7 @@ export default function Home() {
         </section>
 
         <section className="expertise section-shell" id="expertise">
+          <span className="section-watermark" data-scrub aria-hidden="true">02</span>
           <div className="section-heading" data-reveal><div><div className="section-index">02 / EXPERTISE</div><h2>Where I create value</h2></div><p>From model-facing services to the operational layer beneath them.</p></div>
           <div className="expertise-grid">
             {expertise.map((item) => (
@@ -102,11 +105,14 @@ export default function Home() {
         </section>
 
         <section className="experience section-shell" id="experience">
+          <span className="section-watermark" data-scrub aria-hidden="true">03</span>
           <div className="section-heading" data-reveal><div><div className="section-index">03 / EXPERIENCE</div><h2>Built through practice</h2></div><p>A career moving upward through infrastructure, backend engineering, and applied AI.</p></div>
           <div className="timeline">
             {experience.map((job, index) => (
               <article className="job" key={job.company} data-reveal>
-                <div className="job-marker"><span>{String(index + 1).padStart(2, "0")}</span></div>
+                <div className="job-marker">
+                  {job.logo ? <Image className="job-logo" src={job.logo} alt={`${job.company} logo`} width={44} height={44} /> : <span>{String(index + 1).padStart(2, "0")}</span>}
+                </div>
                 <div className="job-period">{job.period}</div>
                 <div className="job-content">
                   <div className="job-title"><div><h3>{job.role}</h3><p>{job.company} · {job.location}</p></div></div>
@@ -129,6 +135,7 @@ export default function Home() {
         </section>
 
         <section className="credentials section-shell" id="credentials">
+          <span className="section-watermark" data-scrub aria-hidden="true">05</span>
           <div className="section-heading" data-reveal><div><div className="section-index">05 / CREDENTIALS</div><h2>Continuous learning,<br />validated.</h2></div><p>Cloud architecture, AI, and systems engineering credentials supporting hands-on experience.</p></div>
           <div className="credential-grid">
             {certifications.map((certificate) => (

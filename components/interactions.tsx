@@ -95,6 +95,34 @@ export function Interactions() {
       }
     }
 
+    // --- Scroll-scrubbed parallax (sets --p 0..1 per element) ---
+    const scrubEls = Array.from(document.querySelectorAll<HTMLElement>("[data-scrub]"));
+    if (scrubEls.length && !reduce) {
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const vh = window.innerHeight || 1;
+        for (const el of scrubEls) {
+          const r = el.getBoundingClientRect();
+          const p = (vh - r.top) / (vh + r.height);
+          el.style.setProperty("--p", Math.max(0, Math.min(1, p)).toFixed(4));
+        }
+      };
+      const onScroll = () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      };
+      update();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+      cleanups.push(() => {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      });
+    }
+
     // --- Count-up numbers when they enter the viewport ---
     const counters = document.querySelectorAll<HTMLElement>("[data-count]");
     if (counters.length) {

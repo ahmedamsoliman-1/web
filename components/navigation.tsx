@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Close, Menu } from "./icons";
+import { ThemeToggle } from "./theme-toggle";
 
 const links = [
   ["Expertise", "#expertise"],
@@ -28,9 +29,12 @@ export function Navigation() {
         {links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
         <a className="nav-cta" href="#contact" onClick={() => setOpen(false)}>Let&apos;s talk</a>
       </nav>
-      <button className="menu-button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"}>
-        {open ? <Close /> : <Menu />}
-      </button>
+      <div className="nav-controls">
+        <ThemeToggle />
+        <button className="menu-button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"}>
+          {open ? <Close /> : <Menu />}
+        </button>
+      </div>
     </header>
   );
 }

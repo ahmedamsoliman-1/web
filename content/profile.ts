@@ -8,7 +8,8 @@ export const profile = {
   summary:
     "I design backend-heavy AI platforms where inference services, observability, data systems, developer tooling, and Kubernetes infrastructure operate as one reliable product.",
   resumeUrl:
-    "https://ahmedalimsolimancv.s3.me-central-1.amazonaws.com/CVs_HCL/Ahmed_Ali_M_Soliman_SW_Engineer_en_HCL.pdf",
+    "https://storage.googleapis.com/aamsdn-platform-buck-1/resumes/9c6dd399-24cc-4adc-b549-1e3ebfda5aaa.pdf",
+  website: "https://aamsdn.space/",
   linkedin: "https://ae.linkedin.com/in/ahmed-ali-m-soliman-01aa54120",
   github: "https://github.com/ahmedamsoliman-1",
   gitlab: "https://gitlab.com/ahmedamsoliman-1",
@@ -43,6 +44,7 @@ export const experience = [
     period: "2023 — Present",
     role: "Senior Software Developer",
     company: "Avrioc Technologies",
+    logo: "/avr.png",
     location: "Masdar City, Abu Dhabi",
     description:
       "Building voice-driven AI domains for Arabic recognition, natural language understanding, and knowledge workflows, with an emphasis on reliable delivery and platform clarity.",
@@ -57,6 +59,7 @@ export const experience = [
     period: "2019 — 2023",
     role: "Senior Software Developer",
     company: "HCL Technologies",
+    logo: "/hcl.png",
     location: "Dubai Internet City",
     description:
       "Developed enterprise backend components for voice AI, platform integrations, and production automation across complex delivery environments.",
@@ -71,6 +74,7 @@ export const experience = [
     period: "2017 — 2019",
     role: "DevOps & Infrastructure Engineer",
     company: "Omdurman Ahlia University",
+    logo: "/oau.png",
     location: "Omdurman, Sudan",
     description:
       "Led infrastructure and systems modernization for university services, combining virtualization, Linux operations, documentation, and support.",

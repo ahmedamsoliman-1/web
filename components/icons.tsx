@@ -11,3 +11,6 @@ export const Github = (props: IconProps) => <svg {...base} {...props}><path d="M
 export const Linkedin = (props: IconProps) => <svg {...base} {...props}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6ZM2 9h4v12H2z" /><circle cx="4" cy="4" r="2" /></svg>;
 export const Menu = (props: IconProps) => <svg {...base} {...props}><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
 export const Close = (props: IconProps) => <svg {...base} {...props}><path d="m6 6 12 12M18 6 6 18" /></svg>;
+export const Globe = (props: IconProps) => <svg {...base} {...props}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18" /></svg>;
+export const Sun = (props: IconProps) => <svg {...base} {...props}><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" /></svg>;
+export const Moon = (props: IconProps) => <svg {...base} {...props}><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" /></svg>;

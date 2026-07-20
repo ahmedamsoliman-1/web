@@ -1,3 +1,5 @@
+import { ParticleField } from "./particle-field";
+
 export function Atmosphere() {
   return (
     <div className="atmosphere" aria-hidden="true">
@@ -5,6 +7,7 @@ export function Atmosphere() {
       <div className="aurora aurora-2" />
       <div className="aurora aurora-3" />
       <div className="atmosphere-grid" />
+      <ParticleField />
     </div>
   );
 }
