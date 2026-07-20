@@ -3,7 +3,18 @@ import { ArrowDown, ArrowUpRight, Download, Github, Linkedin, Mail } from "@/com
 import { Navigation } from "@/components/navigation";
 import { RevealObserver } from "@/components/reveal";
 import { SystemVisual } from "@/components/system-visual";
+import { Atmosphere } from "@/components/atmosphere";
+import { Interactions } from "@/components/interactions";
 import { certifications, experience, expertise, profile, technologyGroups } from "@/content/profile";
+
+const stats = [
+  { value: 12, suffix: "+", label: "Years in the field" },
+  { value: 3, suffix: "", label: "Countries delivered in" },
+  { value: 4, suffix: "", label: "AWS certifications" },
+  { value: 100, suffix: "%", label: "Focus on reliability" },
+];
+
+const marqueeItems = ["Voice AI", "Kubernetes", "Node.js", "Python", "AWS", "Observability", "Microservices", "Docker", "CI/CD", "Inference", "Linux", "Data systems"];
 
 export default function Home() {
   const personSchema = {
@@ -20,28 +31,38 @@ export default function Home() {
 
   return (
     <>
+      <Atmosphere />
       <Navigation />
       <RevealObserver />
+      <Interactions />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <main id="top">
         <section className="hero section-shell">
           <div className="hero-glow" aria-hidden="true" />
-          <div className="hero-copy" data-reveal>
-            <div className="eyebrow"><span className="status-dot" />Available for meaningful challenges</div>
-            <h1>Engineering intelligence.<br /><span>Operating reliability.</span></h1>
-            <p>{profile.summary}</p>
-            <div className="hero-actions">
+          <div className="hero-copy">
+            <div className="eyebrow reveal-load" style={{ ["--d" as string]: "0ms" }}><span className="status-dot" />Available for meaningful challenges</div>
+            <h1 className="reveal-load" style={{ ["--d" as string]: "90ms" }}>Engineering <span className="grad-text">intelligence.</span><br /><span className="outline-text">Operating reliability.</span></h1>
+            <p className="reveal-load" style={{ ["--d" as string]: "180ms" }}>{profile.summary}</p>
+            <div className="hero-actions reveal-load" style={{ ["--d" as string]: "260ms" }}>
               <a className="button button-primary" href="#experience">Explore my work <ArrowDown /></a>
               <a className="button button-ghost" href={profile.resumeUrl} target="_blank" rel="noreferrer">Download résumé <Download /></a>
             </div>
-            <div className="hero-meta">
+            <div className="hero-meta reveal-load" style={{ ["--d" as string]: "340ms" }}>
               <div><small>BASED IN</small><strong>Abu Dhabi, UAE</strong></div>
               <div><small>SPECIALIZING IN</small><strong>AI · Backend · Cloud</strong></div>
             </div>
           </div>
-          <div className="hero-art" data-reveal><SystemVisual /></div>
+          <div className="hero-art reveal-load" style={{ ["--d" as string]: "220ms" }} data-tilt><SystemVisual /></div>
           <a className="scroll-cue" href="#intro"><span>Scroll to explore</span><ArrowDown /></a>
         </section>
+
+        <div className="marquee section-shell" aria-hidden="true">
+          <div className="marquee-track">
+            {[...marqueeItems, ...marqueeItems].map((item, i) => (
+              <span key={i}>{item}<i /></span>
+            ))}
+          </div>
+        </div>
 
         <section className="intro section-shell" id="intro">
           <div className="section-index">01 / PROFILE</div>
@@ -58,11 +79,20 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="stats section-shell" aria-label="Career at a glance">
+          {stats.map((stat) => (
+            <div className="stat" key={stat.label} data-reveal>
+              <b><span data-count={stat.value} data-suffix={stat.suffix}>0{stat.suffix}</span></b>
+              <span>{stat.label}</span>
+            </div>
+          ))}
+        </section>
+
         <section className="expertise section-shell" id="expertise">
           <div className="section-heading" data-reveal><div><div className="section-index">02 / EXPERTISE</div><h2>Where I create value</h2></div><p>From model-facing services to the operational layer beneath them.</p></div>
           <div className="expertise-grid">
             {expertise.map((item) => (
-              <article className="expertise-card" key={item.number} data-reveal>
+              <article className="expertise-card" key={item.number} data-reveal data-spotlight>
                 <span className="card-number">{item.number}</span><div className="signal" aria-hidden="true"><i /><i /><i /></div>
                 <h3>{item.title}</h3><p>{item.description}</p>
                 <div className="tag-list">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
@@ -93,7 +123,7 @@ export default function Home() {
           <div className="stack-panel">
             <div className="section-heading" data-reveal><div><div className="section-index">04 / TOOLKIT</div><h2>A stack built to operate</h2></div><p>Technology is useful when it reduces uncertainty, accelerates teams, and survives production.</p></div>
             <div className="stack-grid">
-              {technologyGroups.map((group, index) => <div className="stack-group" key={group.label} data-reveal><span>0{index + 1}</span><h3>{group.label}</h3><div>{group.items.map((item) => <b key={item}>{item}</b>)}</div></div>)}
+              {technologyGroups.map((group, index) => <div className="stack-group" key={group.label} data-reveal data-spotlight><span>0{index + 1}</span><h3>{group.label}</h3><div>{group.items.map((item) => <b key={item}>{item}</b>)}</div></div>)}
             </div>
           </div>
         </section>
@@ -102,7 +132,7 @@ export default function Home() {
           <div className="section-heading" data-reveal><div><div className="section-index">05 / CREDENTIALS</div><h2>Continuous learning,<br />validated.</h2></div><p>Cloud architecture, AI, and systems engineering credentials supporting hands-on experience.</p></div>
           <div className="credential-grid">
             {certifications.map((certificate) => (
-              <a className="credential-card" href={certificate.url} target="_blank" rel="noreferrer" key={certificate.title} data-reveal>
+              <a className="credential-card" href={certificate.url} target="_blank" rel="noreferrer" key={certificate.title} data-reveal data-spotlight>
                 <Image src={certificate.image} alt="" width={92} height={92} /><div><span>{certificate.issuer} · {certificate.date}</span><h3>{certificate.title}</h3><small>View credential <ArrowUpRight /></small></div>
               </a>
             ))}
