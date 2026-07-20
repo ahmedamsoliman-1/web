@@ -7,6 +7,7 @@ import { Atmosphere } from "@/components/atmosphere";
 import { Interactions } from "@/components/interactions";
 import { Headline } from "@/components/headline";
 import { certifications, experience, expertise, profile, technologyGroups } from "@/content/profile";
+import { brandLogos } from "@/content/brand-logos";
 
 const stats = [
   { value: 12, suffix: "+", label: "Years in the field" },
@@ -15,7 +16,6 @@ const stats = [
   { value: 100, suffix: "%", label: "Focus on reliability" },
 ];
 
-const marqueeItems = ["Voice AI", "Kubernetes", "Node.js", "Python", "AWS", "Observability", "Microservices", "Docker", "CI/CD", "Inference", "Linux", "Data systems"];
 
 export default function Home() {
   const personSchema = {
@@ -60,8 +60,13 @@ export default function Home() {
 
         <div className="marquee section-shell" aria-hidden="true">
           <div className="marquee-track">
-            {[...marqueeItems, ...marqueeItems].map((item, i) => (
-              <span key={i}>{item}<i /></span>
+            {[...brandLogos, ...brandLogos].map((logo, i) => (
+              <span key={i} className="marquee-item">
+                <svg className="brand-icon" viewBox="0 0 24 24" style={{ ["--brand" as string]: logo.color }} aria-hidden="true">
+                  <path d={logo.path} fill="currentColor" />
+                </svg>
+                {logo.label}
+              </span>
             ))}
           </div>
         </div>
