@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Download, Github, Globe, Linkedin, Mail } from "@/components/icons";
+import { ArrowDown, ArrowUpRight, Download, Github, Globe, Linkedin, Mail, Phone } from "@/components/icons";
 import { Navigation } from "@/components/navigation";
 import { RevealObserver } from "@/components/reveal";
 import { SystemVisual } from "@/components/system-visual";
@@ -160,7 +160,13 @@ export default function Home() {
           <div className="section-index">06 / CONTACT</div>
           <div className="contact-grid">
             <div data-reveal><p className="contact-kicker">Have a complex system to build?</p><h2>Let&apos;s turn it into<br /><em>something reliable.</em></h2></div>
-            <div className="contact-side" data-reveal><p>Open to senior backend, AI platform, cloud-native, and developer tooling opportunities.</p><a className="button button-primary" href={`mailto:${profile.email}`}>Start a conversation <Mail /></a></div>
+            <div className="contact-side" data-reveal>
+              <p>Open to senior backend, AI platform, cloud-native, and developer tooling opportunities.</p>
+              <div className="contact-actions">
+                <a className="button button-primary" href={`mailto:${profile.email}`}>Send an email <Mail /></a>
+                <a className="button button-ghost" href={`tel:${profile.phone}`} aria-label={`Call Ahmed at ${profile.phone}`}>Call me <Phone /></a>
+              </div>
+            </div>
           </div>
           <div className="contact-footer">
             <div><span>Ahmed Soliman</span><small>Senior Software Developer & AI Platform Engineer</small></div>

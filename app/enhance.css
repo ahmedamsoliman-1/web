@@ -154,7 +154,7 @@ main { position: relative; z-index: 2; }
 
 /* ---- Tech marquee (brand logos) -------------------------------- */
 .marquee {
-  margin: 16px 0 48px;
+  margin: 16px auto 48px;
   padding: 14px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -163,10 +163,12 @@ main { position: relative; z-index: 2; }
   overflow: hidden;
 }
 .marquee-track {
-  display: inline-flex;
+  display: flex;
+  width: max-content;
   align-items: center;
   white-space: nowrap;
-  animation: marquee 42s linear infinite;
+  animation: marquee 70s linear infinite;
+  will-change: transform;
 }
 .marquee-item {
   display: inline-flex;
@@ -485,6 +487,7 @@ main { position: relative; z-index: 2; }
 }
 :root[data-theme="light"] .nav-links { color: #3d4a56; }
 :root[data-theme="light"] .nav-links a:hover { color: #0b1622; }
+:root[data-theme="light"] .nav-links a[href^="#"].is-active { color: #0b1622; }
 :root[data-theme="light"] .menu-button { color: #16232f; }
 :root[data-theme="light"] .site-header.is-scrolled { background: rgba(255, 255, 255, 0.78); box-shadow: 0 12px 40px rgba(20, 40, 60, 0.1); }
 :root[data-theme="light"] .nav-links.is-open { background: rgba(255, 255, 255, 0.97); }
