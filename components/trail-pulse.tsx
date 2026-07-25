@@ -25,9 +25,10 @@ export function track(
   try {
     const payload = JSON.stringify({
       event,
-      user: { id: storedIdentifier(USER_KEY, "anon", localStorage) },
+      anonymousId: storedIdentifier(USER_KEY, "anon", localStorage),
       sessionId: storedIdentifier(SESSION_KEY, "session", sessionStorage),
       properties,
+      context: { source: "portfolio-web" },
     });
 
     if (navigator.sendBeacon) {
