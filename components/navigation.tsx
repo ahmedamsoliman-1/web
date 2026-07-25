@@ -24,10 +24,10 @@ export function Navigation() {
 
   return (
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
-      <a className="brand" href="#top" aria-label="Ahmed Soliman, home"><span>AS</span><b>Ahmed Soliman</b></a>
+      <a className="brand" href="#top" aria-label="Ahmed Soliman, home" data-track="navigation.clicked" data-track-target="top"><span>AS</span><b>Ahmed Soliman</b></a>
       <nav className={`nav-links ${open ? "is-open" : ""}`} aria-label="Primary navigation">
-        {links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
-        <a className="nav-cta" href="#contact" onClick={() => setOpen(false)}>Let&apos;s talk</a>
+        {links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)} data-track="navigation.clicked" data-track-target={href.slice(1)}>{label}</a>)}
+        <a className="nav-cta" href="#contact" onClick={() => setOpen(false)} data-track="contact.clicked" data-track-target="navigation">Let&apos;s talk</a>
       </nav>
       <div className="nav-controls">
         <ThemeToggle />

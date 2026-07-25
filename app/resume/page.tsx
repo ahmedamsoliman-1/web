@@ -13,7 +13,7 @@ export default function ResumePage() {
     <main className="resume-page">
       <header className="resume-header">
         <div><p>AHMED SOLIMAN</p><h1>{profile.role}</h1></div>
-        <div className="resume-contact"><span>{profile.location}</span><a href={`mailto:${profile.email}`}>{profile.email}</a><a href={profile.linkedin}>LinkedIn</a></div>
+        <div className="resume-contact"><span>{profile.location}</span><a href={`mailto:${profile.email}`} data-track="contact.clicked" data-track-target="resume-email">{profile.email}</a><a href={profile.linkedin} data-track="outbound.clicked" data-track-target="resume-linkedin">LinkedIn</a></div>
       </header>
       <section className="resume-summary"><h2>Profile</h2><p>{profile.summary}</p></section>
       <section><h2>Experience</h2>{experience.map((job) => <article className="resume-job" key={job.company}><div><b>{job.period}</b><span>{job.location}</span></div><div><h3>{job.role}</h3><h4>{job.company}</h4><p>{job.description}</p><ul>{job.highlights.map((item) => <li key={item}>{item}</li>)}</ul></div></article>)}</section>

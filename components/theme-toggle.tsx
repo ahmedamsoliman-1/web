@@ -27,6 +27,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       className={`theme-toggle ${className}`}
       onClick={toggle}
+      data-track="theme.toggled"
+      data-track-target="header"
       aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
       title={theme === "dark" ? "Light mode" : "Dark mode"}
       suppressHydrationWarning

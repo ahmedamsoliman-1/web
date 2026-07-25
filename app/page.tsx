@@ -45,9 +45,9 @@ export default function Home() {
             <Headline />
             <p className="reveal-load" style={{ ["--d" as string]: "620ms" }}>{profile.summary}</p>
             <div className="hero-actions reveal-load" style={{ ["--d" as string]: "700ms" }}>
-              <a className="button button-primary" href="#experience">Explore my work <ArrowDown /></a>
-              <a className="button button-ghost" href={profile.website} target="_blank" rel="noreferrer">Main website <Globe /></a>
-              <a className="button button-ghost" href={profile.resumeUrl} target="_blank" rel="noreferrer">Download résumé <Download /></a>
+              <a className="button button-primary" href="#experience" data-track="cta.clicked" data-track-target="explore-work">Explore my work <ArrowDown /></a>
+              <a className="button button-ghost" href={profile.website} target="_blank" rel="noreferrer" data-track="outbound.clicked" data-track-target="main-website">Main website <Globe /></a>
+              <a className="button button-ghost" href={profile.resumeUrl} target="_blank" rel="noreferrer" data-track="resume.downloaded" data-track-target="hero">Download résumé <Download /></a>
             </div>
             <div className="hero-meta reveal-load" style={{ ["--d" as string]: "780ms" }}>
               <div><small>BASED IN</small><strong>Abu Dhabi, UAE</strong></div>
@@ -144,7 +144,7 @@ export default function Home() {
           <div className="section-heading" data-reveal><div><div className="section-index">05 / CREDENTIALS</div><h2>Continuous learning,<br />validated.</h2></div><p>Cloud architecture, AI, and systems engineering credentials supporting hands-on experience.</p></div>
           <div className="credential-grid">
             {certifications.map((certificate) => (
-              <a className="credential-card" href={certificate.url} target="_blank" rel="noreferrer" key={certificate.title} data-reveal data-spotlight>
+              <a className="credential-card" href={certificate.url} target="_blank" rel="noreferrer" key={certificate.title} data-reveal data-spotlight data-track="credential.clicked" data-track-target={certificate.title}>
                 <Image src={certificate.image} alt="" width={92} height={92} /><div><span>{certificate.issuer} · {certificate.date}</span><h3>{certificate.title}</h3><small>View credential <ArrowUpRight /></small></div>
               </a>
             ))}
@@ -163,8 +163,8 @@ export default function Home() {
             <div className="contact-side" data-reveal>
               <p>Open to senior backend, AI platform, cloud-native, and developer tooling opportunities.</p>
               <div className="contact-actions">
-                <a className="button button-primary" href={`mailto:${profile.email}`}>Send an email <Mail /></a>
-                <a className="button button-ghost" href={`tel:${profile.phone}`} aria-label={`Call Ahmed at ${profile.phone}`}>Call me <Phone /></a>
+                <a className="button button-primary" href={`mailto:${profile.email}`} data-track="contact.clicked" data-track-target="email">Send an email <Mail /></a>
+                <a className="button button-ghost" href={`tel:${profile.phone}`} aria-label={`Call Ahmed at ${profile.phone}`} data-track="contact.clicked" data-track-target="phone">Call me <Phone /></a>
               </div>
             </div>
           </div>
